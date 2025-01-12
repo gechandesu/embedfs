@@ -1,0 +1,12 @@
+EmbedFileSystem{
+    files: {'assets/example.json': EmbedFile{
+        data: embed_file.EmbedFileData{ len: 22, path: "assets/example.json", apath: "", uncompressed: 8462c4 }
+        meta: EmbedFileMetadata{
+            key: 'assets/example.json'
+            name: 'example.json'
+            ext: 'json'
+            mimetype: 'application/json'
+        }
+    }}
+}
+{"some": "JSON data"}
