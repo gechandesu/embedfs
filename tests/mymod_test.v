@@ -12,7 +12,7 @@ fn test_mymod() {
 		make_pub: false
 	}
 	os.write_file('assets_generated.v', gen.generate())!
-	ret := os.execute('sh -c "v run ."')
+	ret := os.execute('${os.quoted_path(@VEXE)} run .')
 	dump(diff.compare_text(ret.output, expected_out)!)
 	assert ret.output == expected_out
 }
