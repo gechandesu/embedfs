@@ -38,8 +38,6 @@ fn main() {
 	println(generator.generate())
 }
 
-@[xdoc: 'generate code for embed directories with files into executable.']
-@[name: 'embedfs']
 struct FlagConfig {
 	help           bool
 	chdir          string

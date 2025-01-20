@@ -5,7 +5,7 @@ flags:
   -chdir <string>       change working directory before codegen
   -prefix <string>      path prefix for file keys, none by default
   -ignore <string>      path globs to ignore (allowed multiple times)
-  -module-name <string> generated module name, main by default
-  -const-name <string>  generated constant name with data, embedfs by default
+  -module-name <string> generated module name, 'main' by default
+  -const-name <string>  generated constant name with data, 'embedfs' by default
   -no-pub               do not make symbols in generated module public
-  -force-mimetype       set applicetion/octet-stream mime type for unknown files
+  -force-mimetype       set 'application/octet-stream' mime type for unknown files
