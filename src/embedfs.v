@@ -7,7 +7,7 @@ import net.http.mime
 pub struct CodeGenerator {
 pub:
 	// Path to file or directory to embed
-	path string
+	path string @[required]
 	// Path prefix if you want to add extra prefix for file paths
 	prefix string
 	// Glob patterns to match files the must be ignored when generating the code
