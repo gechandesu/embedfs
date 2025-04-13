@@ -56,6 +56,38 @@ module main
 
 fn main() {
     style := embedfs.files['assets/css/style.css']!
+    // If `bare_map` parameter is set to `true` use:
+    // style := embedfs['assets/css/style.css']!
     println(style.data.to_string())
 }
+```
+
+The generated `embedfs` const value example (from `tests/`):
+
+```v okfmt
+EmbedFileSystem{
+    files: {'assets/example.json': EmbedFile{
+        data: embed_file.EmbedFileData{ len: 22, path: "assets/example.json", apath: "", uncompressed: 846284 }
+        meta: EmbedFileMetadata{
+            key: 'assets/example.json'
+            name: 'example.json'
+            ext: 'json'
+            mimetype: 'application/json'
+        }
+    }}
+}
+```
+
+The generated const value if `bare_map` parameter is `true`:
+
+```v okfmt
+{'assets/example.json': EmbedFile{
+    data: embed_file.EmbedFileData{ len: 22, path: "assets/example.json", apath: "", uncompressed: 845da4 }
+    meta: EmbedFileMetadata{
+        key: 'assets/example.json'
+        name: 'example.json'
+        ext: 'json'
+        mimetype: 'application/json'
+    }
+}}
 ```
