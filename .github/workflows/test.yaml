@@ -23,5 +23,5 @@ jobs:
         run: |
           # fuck this
           sed -i tests/mymod_test.out -e 's/846284/83d954/g'
-          sed -i tests/mymod_test_bare_map/out -e 's/845da4/83d4b4/g'
+          sed -i tests/mymod_test_bare_map.out -e 's/845da4/83d4b4/g'
           v -stats test .
