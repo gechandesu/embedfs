@@ -20,7 +20,7 @@ fn test_mymod() {
 
 fn test_mymod_bare_map() {
 	oldpwd := os.getwd()
-	expected_out := os.read_file('tests/mymod_test_bare_map.out')!
+	expected_out := os.read_file('tests/mymod_test.out')!
 	os.chdir('tests/mymod')!
 	gen := embedfs.CodeGenerator{
 		path:     'assets'
