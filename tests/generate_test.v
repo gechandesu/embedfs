@@ -9,9 +9,8 @@ fn test_generate() {
 
 const embed_files = {
 	'cmd/mkembedfs/mkembedfs.v': $embed_file('cmd/mkembedfs/mkembedfs.v')
-	'cmd/mkembedfs/help.txt': $embed_file('cmd/mkembedfs/help.txt')
 }
 "
-	data := embedfs.generate('cmd')!
+	data := embedfs.generate('cmd', ignore: ['*.txt'])!
 	assert data == expected
 }
