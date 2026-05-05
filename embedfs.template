@@ -1,0 +1,21 @@
+module ${module_name}
+
+@if !skip_notice
+/*
+	${notice}
+*/
+
+@endif
+@if const_public
+pub const ${const_name} = {
+@else
+const ${const_name} = {
+@endif
+@for key, value in files
+@if compression
+	'${key}': $embed_file('${value}', .zlib)
+@else
+	'${key}': $embed_file('${value}')
+@endif
+@endfor
+}

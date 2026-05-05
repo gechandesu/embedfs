@@ -1,7 +1,7 @@
 Module {
 	name: 'embedfs'
-	description: 'Code generator for embedding directories with files into executables'
-	version: '0.0.2'
+	description: 'Embed directories into executables'
+	version: '1.0.0'
 	license: 'Unlicense'
 	dependencies: []
 }

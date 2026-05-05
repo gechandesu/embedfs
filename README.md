@@ -1,16 +1,17 @@
-## Code generator for embedding directories with files into executables
+# Embedding Directories into Executables
 
-The `$embed_file` statement in V embeds only a single file. This module makes
-it easy to embed entire directories into the final executable.
+The `$embed_file()` call in V embeds only a single file. This module makes it
+easy to embed entire directories into the final executable.
 
-File embedding in V is done at compile time, and unfortunately there is no way
-to dynamically embed arbitrary files into an application. The `embedfs` module
-is a simple code generator that creates a separate `.v` file with the code for
-embedding files. That is, the embedfs call must be made before the code is
-compiled. So embedfs is a build dependency.
+File embedding in V is done at compile time, and there is no way to dynamically
+embed arbitrary files into an application. The `embedfs` module is a simple
+code generator that creates a separate `.v` file with the code for embedding
+files.
+
+## Installation
 
 ```
-v install --git https://github.com/gechandesu/embedfs
+v install https://github.com/gechandesu/embedfs
 ```
 
 ## Usage
@@ -18,28 +19,30 @@ v install --git https://github.com/gechandesu/embedfs
 For example you have following file structure:
 
 ```
-v.mod
-src/
-    main.v
-    assets/
-        css/style.css
-        js/app.js
+./
+├── src/
+│   ├── assets/
+│   │   ├── css/
+│   │   │   └── style.css
+│   │   └── js/
+│   │       └── app.js
+│   └── main.v
+└── v.mod
 ```
 
 Lets embed the `assets` directory.
 
-Create `embed_assets.vsh` next to your v.mod:
+Create `embed_assets.vsh` next to v.mod:
 
 ```v
-#!/usr/bin/env -S v
+#!/usr/bin/env v
 
+import os
 import embedfs
 
-chdir('src')!
-assets := embedfs.CodeGenerator{
-    path: 'assets'
-}
-write_file('assets_generated.v', assets.generate())!
+os.chdir('src')!
+assets := embedfs.generate('assets')!
+os.write_file('assets_generated.v', assets)!
 ```
 
 Run it:
@@ -48,46 +51,40 @@ Run it:
 v run embed_assets.vsh
 ```
 
-Now you have `src/assets_generated.v`. Take a look inside it. So you can use
-`embedfs` const in `src/main.v` in this way:
+Now you have `src/assets_generated.v`. Take a look inside it:
+
+```v
+module main
+
+const embed_files = {
+        'assets/css/style.css': $embed_file('assets/css/style.css')
+        'assets/js/app.js': $embed_file('assets/js/app.js')
+}
+```
+
+You can use it in `src/main.v` in this way:
 
 ```v
 module main
 
 fn main() {
-    style := embedfs.files['assets/css/style.css']!
-    // If `bare_map` parameter is set to `true` use:
-    // style := embedfs['assets/css/style.css']!
-    println(style.data.to_string())
+    style := unsafe { embed_files['assets/css/style.css'].to_string() }
+    println(style)
 }
 ```
 
-The generated `embedfs` const value example (from `tests/`):
+The map type is `map[string]embed_file.EmbedFileData`, see the
+[v.embed_file](https://modules.vlang.io/v.embed_file.html#EmbedFileData)
+module docs for details.
 
-```v okfmt
-EmbedFileSystem{
-    files: {'assets/example.json': EmbedFile{
-        data: embed_file.EmbedFileData{ len: 22, path: "assets/example.json", apath: "", uncompressed: 846284 }
-        meta: EmbedFileMetadata{
-            key: 'assets/example.json'
-            name: 'example.json'
-            ext: 'json'
-            mimetype: 'application/json'
-        }
-    }}
-}
+## `bin2v` tool
+
+Also there is `v bin2v` utility that generates the V modules with embedded
+files. See:
+
+```
+v help bin2v
 ```
 
-The generated const value if `bare_map` parameter is `true`:
-
-```v okfmt
-{'assets/example.json': EmbedFile{
-    data: embed_file.EmbedFileData{ len: 22, path: "assets/example.json", apath: "", uncompressed: 845da4 }
-    meta: EmbedFileMetadata{
-        key: 'assets/example.json'
-        name: 'example.json'
-        ext: 'json'
-        mimetype: 'application/json'
-    }
-}}
-```
+In contrast with embedfs, bin2v generates constants into which it writes
+files as fixed-length byte arrays.
