@@ -15,8 +15,8 @@ jobs:
         run: |
           #wget -qO /tmp/v.zip https://github.com/vlang/v/releases/latest/download/v_linux.zip
           #unzip -q /tmp/v.zip -d /tmp
-          git clone --depth=1 https://github.com/vlang/v /tmp/ && cd /tmp && make
-          echo /tmp/v >> "$GITHUB_PATH"
+          git clone --depth=1 https://github.com/vlang/v /tmp/v && cd /tmp/v && make
+          echo /tmp/v/v >> "$GITHUB_PATH"
 
       - name: Build docs
         run: |
